@@ -4,15 +4,14 @@ from libro_digital import LibroDigital
 from errores import LibroNoDisponibleError, LibroYaPrestadoError, LibroNoEncontradoError
 
 class Biblioteca:
-    """Gestión de una biblioteca con persistencia en archivo de texto."""
-    def __init__(self, archivo: str = "biblioteca.txt"):
+    """Se define clase Biblioteca para gestionar la biblioteca"""
+    def __init__(self, archivo="biblioteca.txt"): 
         self.archivo = archivo
         self.libros: list[Libro] = []
         self.cargar_desde_archivo()
 
-    # ------------------ Persistencia ------------------ #
-    def cargar_desde_archivo(self) -> None:
-        """Lee los libros desde el archivo al iniciar (formato: T|A|AÑO|ESTADO[|FORMATO])."""
+    def cargar_desde_archivo(self):
+        """Lee los libros desde el archivo al iniciar"""
         if not os.path.exists(self.archivo):
             return
         try:
@@ -21,57 +20,46 @@ class Biblioteca:
                     linea = linea.strip()
                     if not linea:
                         continue
-                    partes = linea.split("|")
-                    if len(partes) == 4:
-                        titulo, autor, anio_str, estado = partes
-                        anio: Optional[int] = self._parse_anio(anio_str)
+                    datos = linea.split("|")
+                    if len(datos) == 4:
+                        titulo, autor, anio, estado = datos
                         self.libros.append(Libro(titulo, autor, anio, estado))
-                    elif len(partes) == 5:
-                        titulo, autor, anio_str, estado, formato = partes
-                        anio: Optional[int] = self._parse_anio(anio_str)
+                    elif len(datos) == 5:  # Libro digital
+                        titulo, autor, anio, estado, formato = datos
                         self.libros.append(LibroDigital(titulo, autor, anio, estado, formato))
         except Exception as e:
             print(f"Error al cargar libros: {e}")
-
-    def guardar_en_archivo(self) -> None:
-        """Guarda todos los libros en el archivo (sobrescribe)."""
+                        
+    def guardar_en_archivo(self):
+        """Guarda todos los libros en el archivo (sobrescribe)"""
         try:
             with open(self.archivo, "w", encoding="utf-8") as f:
                 for libro in self.libros:
-                    # Año: escribe vacío si es None
-                    anio = libro.get_fecha_publicacion()
-                    anio_str = "" if anio is None else str(anio)
                     if isinstance(libro, LibroDigital):
-                        f.write(
-                            f"{libro.get_titulo()}|{libro.get_autor()}|{anio_str}|{libro.get_disponible()}|{libro.get_formato()}\n"
-                        )
+                        f.write(f"{libro.get_titulo()}|{libro.get_autor()}|{libro.get_fecha_publicacion()}|{libro.get_disponible()}|{libro.get_formato()}\n")
                     else:
-                        f.write(
-                            f"{libro.get_titulo()}|{libro.get_autor()}|{anio_str}|{libro.get_disponible()}\n"
-                        )
+                        f.write(f"{libro.get_titulo()}|{libro.get_autor()}|{libro.get_fecha_publicacion()}|{libro.get_disponible()}\n")
         except Exception as e:
             print(f"Error al guardar libros: {e}")
 
-# ------------------ Metodos ------------------ #
-    def agregar_libro(self) -> None:
-        """Agrega un nuevo libro (interactivo). Estado se maneja como string."""
+    def agregar_libro(self):
+        """Agrega un nuevo libro a la biblioteca"""
         try:
             titulo = input("Título: ").strip()
             autor = input("Autor: ").strip()
-            anio_in = input("Año de publicación (opcional): ").strip()
-            anio = self._parse_anio(anio_in)
+            fecha_publicacion = input("Año de publicación: ").strip()
 
-            estado = (input("Estado (disponible/prestado) [disponible]: ").strip().lower() or "disponible")
-            if estado not in ("disponible", "prestado"):
+            disponible = (input("Estado (disponible/prestado) [disponible]: ").strip().lower() or "disponible")
+            if disponible not in ("disponible", "prestado"):
                 print("Estado inválido. Se usará 'disponible'.")
-                estado = "disponible"
-
+                disponible = "disponible"
+            
             tipo = input("¿Es un libro físico o digital? (f/d): ").strip().lower()
             if tipo == "d":
-                formato = input("Formato (PDF, EPUB, MOBI): ").strip()
-                libro = LibroDigital(titulo, autor, anio, estado, formato)
+                formato = input("Formato (PDF, EPUB, MOBI): ").strip().lower()
+                libro = LibroDigital(titulo, autor, fecha_publicacion, disponible, formato)
             else:
-                libro = Libro(titulo, autor, anio, estado)
+                libro = Libro(titulo, autor, fecha_publicacion, disponible)
 
             self.libros.append(libro)
             self.guardar_en_archivo()
@@ -79,33 +67,81 @@ class Biblioteca:
         except Exception as e:
             print(f"Error al agregar el libro: {e}")
 
-    def eliminar_libro(self) -> None:
-        """Elimina un libro por su título (interactivo)."""
+    def eliminar_libro(self):
+        """Eliminar libro de la biblioteca"""
         objetivo = input("¿Qué libro desea eliminar?: ").strip().lower()
         encontrado = False
+        nuevas_lineas = []
         try:
-            # Filtra en memoria
-            antes = len(self.libros)
-            self.libros = [l for l in self.libros if l.get_titulo().strip().lower() != objetivo]
-            encontrado = len(self.libros) < antes
+            with open(self.archivo, "r", encoding="utf-8") as f:
+                for linea in f:
+                    linea = linea.rstrip("\n")
+                    if not linea:
+                        continue
+                    campos = linea.split("|")
+                    titulo = campos[0].strip().lower()
+                    if titulo == objetivo:
+                        encontrado = True
+                        continue
+                    nuevas_lineas.append(linea + "\n")
 
-            # Persiste cambios
-            self.guardar_en_archivo()
+            with open(self.archivo, "w", encoding="utf-8") as f:
+                f.writelines(nuevas_lineas)
+
+            self.libros = [
+                l for l in self.libros
+                if l.get_titulo().strip().lower() != objetivo
+            ]
 
             if encontrado:
                 print(f"Libro '{objetivo}' eliminado.")
             else:
-                # Si tienes excepción custom, puedes usarla:
-                # raise LibroNoEncontradoError(f"No se encontró el libro '{objetivo}'.")
                 print(f"No se encontró el libro '{objetivo}'.")
         except Exception as e:
             print(f"Error al eliminar el libro: {e}")
-
+    
     def listar_libros(self):
-        pass
+        """Listar libros de la biblioteca"""
+        if not self.libros:
+            print("No hay libros en la biblioteca.")
+            return
+        
+        for libro in self.libros:
+            print(libro) # LLamamos al metodo  __str__()
+            print("-" * 20)
 
-    def buscar_libro(self, titulo):
-        pass
+    def buscar_libro(self):
+        """Busca libro en la biblioteca por titulo (Coincidencia exacta)"""
+        libro_buscar = input("¿Qué libro desea buscar?: ").strip().lower()
+        encontrado = False
+        try:
+            with open(self.archivo, "r", encoding="utf-8") as f:
+                for linea in f:
+                    linea = linea.strip()
+                    if not linea:
+                        continue # Salta líneas vacias
+                    atributos = [atributo.strip() for atributo in linea.split("|")]
+                    nombre_libro = atributos[0].strip().lower()
+                    
+                    if nombre_libro == libro_buscar:
+                        print("\n=== LIBRO ENCONTRADO ===")
+                        print(f"Título: {atributos[0]}")
+                        print(f"Autor: {atributos[1] if len(atributos) > 1 else ''}")
+                        print(f"Fecha de publicación: {atributos[2] if len (atributos) > 2 else ''}")
+                        print(f"Estado: {atributos[3] if len(atributos) > 3 else ''}")
+                        if len(atributos) > 4:
+                            print(f"Formato: {atributos[4]}")
+                        encontrado = True
+                        break
+            if not encontrado:
+                #Excepción personalizada
+                print(LibroNoEncontradoError(libro_buscar))
+
+        except FileNotFoundError:
+            print(f"Error: No se encontro el archivo 'biblioteca.txt'")
+
+        except Exception as e:
+            print(f"Error inesperado al buscar el libro: {e}")
 
     def prestar_libro(self):
         pass
