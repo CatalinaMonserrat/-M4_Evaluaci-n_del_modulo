@@ -1,7 +1,7 @@
 import os
 from libro import Libro
 from libro_digital import LibroDigital
-from errores import LibroNoDisponibleError, LibroYaPrestadoError, LibroNoEncontradoError
+from errores import LibroNoDisponibleError, LibroYaPrestadoError, LibroNoEncontradoError, LibroNoPrestadoError
 
 class Biblioteca:
     """Se define clase Biblioteca para gestionar la biblioteca"""
@@ -88,17 +88,22 @@ class Biblioteca:
             with open(self.archivo, "w", encoding="utf-8") as f:
                 f.writelines(nuevas_lineas)
 
-            self.libros = [
-                l for l in self.libros
-                if l.get_titulo().strip().lower() != objetivo
-            ]
+            #Sincroniza memoria
+            self.libros = [l for l in self.libros if l.get_titulo().strip().lower() != objetivo]
 
             if encontrado:
                 print(f"Libro '{objetivo}' eliminado.")
-            else:
-                print(f"No se encontró el libro '{objetivo}'.")
+                return
+            
+            # No encontrado -> Error Personalizado
+            raise LibroNoDisponibleError (f"Libro '{objetivo}' no disponible.")
+
+        except FileNotFoundError:
+            print(f"Error: No se encontro el archivo 'biblioteca.txt'")
+
         except Exception as e:
-            print(f"Error al eliminar el libro: {e}")
+            print(f"Error inesperado al eliminar el libro: {e}")
+
     
     def listar_libros(self):
         """Listar libros de la biblioteca"""
@@ -135,7 +140,7 @@ class Biblioteca:
                         break
             if not encontrado:
                 #Excepción personalizada
-                print(LibroNoEncontradoError(libro_buscar))
+                raise LibroNoEncontradoError (f"Libro '{libro_buscar}' no encontrado.")
 
         except FileNotFoundError:
             print(f"Error: No se encontro el archivo 'biblioteca.txt'")
@@ -144,11 +149,53 @@ class Biblioteca:
             print(f"Error inesperado al buscar el libro: {e}")
 
     def prestar_libro(self):
-        pass
+        """Marcar un libro como prestado en biblioteca"""
+        libro_prestado = input("¿Qué libro desea prestar?: ").strip().lower()
 
+        for libro in self.libros:
+            if libro.get_titulo().strip().lower() == libro_prestado:
+                if libro.get_disponible().strip().lower() == "prestado":
+                    raise LibroYaPrestadoError(f"El libro '{libro_prestado}' ya esta prestado.")            
+                libro.set_disponible("prestado")
+                self.guardar_en_archivo()
+                print(f"Libro '{libro_prestado}' prestado correctamente.")
+                return
+            #Error personalizado
+        raise LibroNoEncontradoError(f"Libro '{libro_prestado}' no encontrado.")
+                        
     def devolver_libro(self):
-        pass
+        """Marcar un libro como disponible en biblioteca"""
+        libro_devuelto = input("¿Qué libro desea devolver?: ").strip().lower()
+
+        for libro in self.libros:
+            if libro.get_titulo().strip().lower() == libro_devuelto:
+                if libro.get_disponible().strip().lower() == "disponible":
+                    raise LibroNoPrestadoError(f"El libro '{libro_devuelto}' no se encuentra prestado.")
+                libro.set_disponible("disponible")
+                self.guardar_en_archivo()
+                print(f"Libro '{libro_devuelto}' devuelto correctamente.")
+                return
+            #Error personalizado
+        raise LibroNoEncontradoError(f"Libro '{libro_devuelto}' no encontrado.")
 
     def listar_libros_prestados(self):
-        pass
+        """Listar libros prestados de la biblioteca"""
+        libros_prestados = [libro for libro in self.libros if libro.get_disponible().strip().lower() == "prestado"]
+        if not libros_prestados:
+            print("No hay libros prestados en la biblioteca.")
+            return
+        for libro in libros_prestados:
+            print(libro) # Usa __str__ de Libro o LibroDigital
+            print("-" * 20)
 
+
+    def listar_libros_disponibles(self):
+        """Listar libros disponibles de la biblioteca"""
+        disponibles = [l for l in self.libros if l.get_disponible().strip().lower() == "disponible"]
+        if not disponibles:
+            print("No hay libros disponibles en la biblioteca.")
+            return
+        print("\n=== LIBROS DISPONIBLES ===")
+        for l in disponibles:
+            print(l)
+            print("-" * 20)

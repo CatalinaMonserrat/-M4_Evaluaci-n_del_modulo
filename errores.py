@@ -6,3 +6,6 @@ class LibroYaPrestadoError(Exception):
 
 class LibroNoDisponibleError(Exception):
     pass
+
+class LibroNoPrestadoError(Exception):
+    pass

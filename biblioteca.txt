@@ -1,30 +1,10 @@
-"Balada de pájaros cantores y serpientes (Los juegos del hambre","#0)","Suzanne Collins","2020","disponible"
-"Cuatro (Divergente","#0.1-0.4)","Veronica Roth","2014","disponible"
-"La espada de la asesina (Trono de cristal","#0.1-0.5)","Sarah J. Maas","2014","disponible"
-"The Kill Order (The Maze Runner","#0.4)","James Dashner","2012","disponible"
-"Amanecer en la cosecha (Los juegos del hambre","#0.5)","Suzanne Collins","2025","disponible"
-"La chica de nieve (Miren Triggs","#1)","Javier Castillo","2020","disponible"
-"De sangre y cenizas (Sangre y cenizas","#1)","Jennifer L. Armentrout","2020","disponible"
-"Muerte a la oscuridad (Black Bird Academy","#1)","Stella A. Tack","2023","disponible"
-"Finlay Donovan Is Killing It (Finlay Donovan","#1)","Elle Cosimano","2021","disponible"
-"El psicoanalista (El psicoanalista","#1)","John Katzenbach","2002","disponible"
-"Butcher & Blackbird (The Ruinous Love Trilogy","#1)","Brynne Weaver","2023","disponible"
-"Quicksilver (Fae & Alchemy","#1)","Callie Hart","2024","disponible"
-"Has llamado a Sam (You've Reached Sam","#1)","Dustin Thao","2021","disponible"
-"La serpiente y las alas de la noche (Crowns of Nyaxia","#1)","Carissa Broadbent","2022","disponible"
-"Alas de sangre (Empíreo","#1)","Rebecca Yarros","2023","disponible"
-"Asesinato para principiantes (Asesinato para principiantes","#1)","Holly  Jackson","2019","disponible"
-"El gran juego (El gran juego","#1)","Jennifer Lynn Barnes","2024","disponible"
-"Érase una vez un corazón roto (Érase una vez un corazón roto","#1)","Stephanie Garber","2021","disponible"
-"Icebreaker (UCMH","#1)","Hannah  Grace","2022","disponible"
-"Princesa de cenizas (Princesa de cenizas","#1)","Laura Sebastian","2018","disponible"
-"El reino de los malditos (El reino de los malditos","#1)","Kerri Maniscalco","2020","disponible"
-"Una magia más oscura (Sombras de magia","#1)","V.E. Schwab","2015","disponible"
-"Un trato con el rey de los elfos (Unidos por la magia","#1)","Elise Kova","2020","disponible"
-"Hooked (Never After","#1)","Emily McIntire","2021","disponible"
-"Te veré bajo el hielo (Detective Erika Foster","#1)","Robert Bryndza","2016","disponible"
-"La guerra de la amapola (La guerra de la amapola","#1)","R.F. Kuang","2018","disponible"
-"Beartown (Beartown","#1)","Fredrik Backman","2016","disponible"
-"La letra pequeña (Dreamland Billionaires","#1)","Lauren Asher","2021","disponible"
-"Rivales divinos (Cartas encantadas","#1)","Rebecca   Ross","2023","disponible"
-"No es amor (No es amor","#1)","Ali Hazelwood","2024","disponible"
+Lo frágil y lo eterno|Bruno Puelles|2024|disponible
+Cien años de soledad|Gabriel García Márquez|1967|disponible
+El nombre del viento|Patrick Rothfuss|2007|disponible
+Fahrenheit 451|Ray Bradbury|1953|prestado
+La sombra del viento|Carlos Ruiz Zafón|2001|disponible
+La hipótesis del amor|Ali Hazelwood|2021|disponible|EPUB
+La química del amor|Ali Hazelwood|2022|prestado|EPUB
+Bajo la misma estrella|John Green|2012|prestado
+No es amor|Ali Hazelwood|2023|prestado|EPUB
+Los pilares de la Tierra|Ken Follett|1989|prestado
