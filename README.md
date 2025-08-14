@@ -3,7 +3,7 @@
 Este proyecto es un sistema de gestión de biblioteca desarrollado en Python que permite administrar libros físicos y digitales, almacenando la información en un archivo de texto (biblioteca.txt).
 El programa funciona a través de un menú interactivo en consola que permite al usuario agregar, buscar, prestar, devolver, listar y eliminar libros.
 
-Funcionalidades
+📌 Funcionalidades
 
 Agregar libro: Permite registrar libros físicos o digitales, especificando título, autor, año de publicación, estado y formato (en caso de ser digital).
 Eliminar libro: Elimina un libro del inventario buscando por título.
@@ -16,7 +16,7 @@ Listar libros:
   Devolver libro: Cambia el estado de un libro de “prestado” a “disponible”.
   Guardar y cargar desde archivo: Los cambios se almacenan en biblioteca.txt para conservar la información entre ejecuciones.
 
-Tecnologías utilizadas
+🛠️ Tecnologías utilizadas
 
 Python 3
 Manejo de archivos (open, read, write)
@@ -24,7 +24,7 @@ Programación Orientada a Objetos (POO)
 Manejo de excepciones (incluyendo errores personalizados)
 Uso de listas por comprensión para filtrado de datos
 
-Estructura del proyecto
+📌 Estructura del proyecto
 ```
 📁 gestor_biblioteca
  ├── main.py                # Archivo principal con el menú interactivo
@@ -35,7 +35,7 @@ Estructura del proyecto
  ├── biblioteca.txt         # Archivo donde se guardan los libros
  └── README.md              # Documentación del proyecto
 ```
-Formato del archivo biblioteca.txt
+📌 Formato del archivo biblioteca.txt
 
 Cada libro se guarda en una línea con el siguiente formato:
 Para libros físicos:
@@ -51,7 +51,7 @@ Ejemplo:
   Lo frágil y lo eterno|Bruno Puelles|2024|prestado
   La hipótesis del amor|Ali Hazelwood|2021|disponible|EPUB
 ```
-Cómo ejecutar el programa
+📌 Cómo ejecutar el programa
 
 Clonar este repositorio o descargar los archivos.
 Asegurarse de tener Python 3 instalado.
@@ -62,7 +62,7 @@ python main.py
 
 Seguir las instrucciones del menú interactivo.
 
-Notas
+📌 Notas
 
 Si el archivo biblioteca.txt no existe, el programa lo creará automáticamente.
 Los cambios realizados (agregar, eliminar, prestar, devolver) se guardan automáticamente en el archivo.
